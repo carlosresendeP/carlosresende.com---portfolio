@@ -90,7 +90,7 @@ export const Footer = () => {
         {/* Bottom */}
         <div className="border-t border-border pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-muted-foreground">
           <p>© {year} Carlos Resende — Todos os direitos reservados.</p>
-          <p>Construído com <span className="text-primary">Next.js</span></p>
+          <p>Desenvolvido por <span className="text-primary">Carlos Resende</span></p>
         </div>
       </div>
     </footer>

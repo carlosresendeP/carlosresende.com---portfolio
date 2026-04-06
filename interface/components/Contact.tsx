@@ -147,7 +147,7 @@ export default function Contact() {
             className="flex flex-col gap-8"
           >
             {[
-              { icon: Mail, label: 'E-mail', value: 'contato@carlosresende.com.br', href: 'mailto:contato@carlosresende.com.br' },
+              { icon: Mail, label: 'E-mail', value: 'dev.carlosresende@hotmail.com', href: 'mailto:dev.carlosresende@hotmail.com' },
               { icon: Phone, label: 'WhatsApp', value: '+55 (32) *****-****', href: 'https://wa.me/5532998283189' },
               { icon: MapPin, label: 'Localização', value: 'Juiz de Fora, MG — Brasil', href: undefined },
             ].map(({ icon: Icon, label, value, href }) => (
