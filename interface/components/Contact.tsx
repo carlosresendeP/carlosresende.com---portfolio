@@ -144,7 +144,7 @@ export default function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="flex flex-col gap-8"
+            className="flex justify-center items-start flex-col gap-8"
           >
             {[
               { icon: Mail, label: 'E-mail', value: 'dev.carlosresende@hotmail.com', href: 'mailto:dev.carlosresende@hotmail.com' },
@@ -162,12 +162,12 @@ export default function Contact() {
                       href={href}
                       target={href.startsWith('http') ? '_blank' : undefined}
                       rel="noopener noreferrer"
-                      className="text-lg font-bold text-foreground hover:text-primary transition-colors"
+                      className="font-bold text-foreground hover:text-primary transition-colors text-sm md:text-lg"
                     >
                       {value}
                     </a>
                   ) : (
-                    <p className="text-lg font-bold text-foreground">{value}</p>
+                    <p className="font-bold text-foreground text-sm md:text-lg">{value}</p>
                   )}
                 </div>
               </div>
