@@ -1,6 +1,3 @@
 {
-  "buildCommand": "cd interface && npm install && npm run build",
-  "outputDirectory": "interface/.next",
-  "framework": "nextjs",
-  "installCommand": "echo skip"
+  "rootDirectory": "interface"
 }
