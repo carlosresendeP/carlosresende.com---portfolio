@@ -8,8 +8,9 @@ import BlurText from '@/components/BlurText'
 import PixelSnow from '@/components/PixelSnow'
 
 const ROLES = [
-  'Desenvolvedor Full Stack',
   'Desenvolvedor Front-End',
+  'Desenvolvedor Full Stack',
+  'Desenvolvedor de Software',
   'Desenvolvedor web'
 ] as const
 
