@@ -3,6 +3,7 @@ import { PrismaClient } from "../lib/generated/prisma/client";
 const prisma = new PrismaClient();
 
 const projects = [
+  // --- Projetos originais ---
   {
     title: "Barber Shop",
     description:
@@ -84,16 +85,6 @@ const projects = [
     img: "/projects-images/mokup-BarberElite.png",
   },
   {
-    title: "Confeitaria Doce Encanto",
-    description:
-      "Landing page para confeitaria fictícia desenvolvida para praticar e aprimorar habilidades em front-end com React e Styled Components.",
-    tags: ["React", "Styled Components", "JavaScript"],
-    category: "frontend",
-    deploy: "https://doce-encanto-doceria.vercel.app/",
-    githubUrl: "https://github.com/carlosresendeP/Doce-Encanto-doceria",
-    img: "/projects-images/mockup-doce-encanto.png",
-  },
-  {
     title: "Performance Master",
     description:
       "Landing page para academia integrada com chatbot inteligente via n8n.",
@@ -113,6 +104,57 @@ const projects = [
     githubUrl: "https://github.com/carlosresendeP/boheme-cafe-jf",
     img: "/projects-images/mockup-bohemecafe.png",
   },
+  // --- Projetos adicionados ---
+  {
+    title: "Website Neuropsicóloga",
+    description:
+      "Website clínico para profissional de saúde mental com foco em apresentação de serviços, depoimentos e navegação clara.",
+    tags: ["HTML", "Bootstrap", "Responsive", "UI"],
+    category: "frontend",
+    deploy: "https://projeto-rubialand-website.vercel.app/",
+    githubUrl: "https://github.com/carlosresendeP/Projeto-landing-page-neuropsicologa",
+    img: "/projects-images/mockup-RubiaWebsite.png",
+  },
+  {
+    title: "Dev Burger (Fullstack)",
+    description:
+      "Projeto completo de hamburgueria com sistema de pedidos, pagamentos e gerenciamento — frontend separado do backend (fullstack).",
+    tags: ["React", "Node.js", "MongoDB", "Postgres", "Stripe"],
+    category: "fullstack",
+    deploy: "#",
+    githubUrl: "https://github.com/carlosresendeP/DevBurger-Interface",
+    img: "/projects-images/mockup-DevBurger.png",
+  },
+  {
+    title: "Tradição Vidros",
+    description:
+      "Website institucional para empresa de vidros e espelhos, com foco em apresentação de serviços e portfólio de projetos realizados.",
+    tags: ["HTML", "CSS", "JavaScript", "Responsive", "Bootstrap"],
+    category: "frontend",
+    deploy: "https://carlosresendep.github.io/tradicao-vidros/",
+    githubUrl: "https://github.com/carlosresendeP/tradicao-vidros",
+    img: "/projects-images/mockup-tradicaoVidros.png",
+  },
+  {
+    title: "Landing page - Ebook do zero a programação",
+    description:
+      "Landing page para venda de ebook sobre programação",
+    tags: ["HTML", "CSS", "React", "TypeScript", "Responsive", "Tailwind", "shadcn/ui"],
+    category: "frontend",
+    deploy: "https://do-zero-ao-dinheiro.vercel.app/",
+    githubUrl: "https://github.com/carlosresendeP/do-zero-ao-dinheiro---landing-page",
+    img: "/projects-images/Mockup-landingpageEbook.png",
+  },
+  {
+    title: "Dom Cortes Barberaria",
+    description:
+      "Website institucional para barbearia com foco em apresentação de serviços, depoimentos e contato.",
+    tags: ["HTML", "CSS", "React", "TypeScript", "Responsive", "Tailwind", "shadcn/ui"],
+    category: "frontend",
+    deploy: "https://dom-cortes-barberaria.vercel.app/",
+    githubUrl: "https://github.com/carlosresendeP/DomCortes-BarberShop",
+    img: "/projects-images/Mockup-domCortes.jpeg",
+  }
 ];
 
 async function main() {
