@@ -2,127 +2,190 @@
 
 import { motion } from 'motion/react'
 import {
-  FaReact, FaNodeJs, FaGitAlt, FaFigma, FaDatabase, FaHtml5, FaCss3Alt,FaVuejs 
+  FaReact, FaNodeJs, FaGitAlt, FaFigma, FaDatabase, FaHtml5, FaCss3Alt, FaVuejs,
 } from 'react-icons/fa'
 import {
   SiTypescript, SiNextdotjs, SiTailwindcss, SiMongodb,
-  SiPostgresql, SiPrisma, SiN8N, SiDocker, SiJavascript,
-  SiVite,
+  SiPostgresql, SiPrisma, SiN8N, SiDocker, SiJavascript, SiVite,
 } from 'react-icons/si'
 
 interface Skill {
   name: string
   icon: React.ElementType
-  pct: number
-  /** Cor brand real da tecnologia (Tailwind inline style) */
   brandColor: string
 }
 
-const skills: Skill[] = [
-  { name: 'HTML5',       icon: FaHtml5,       pct: 95, brandColor: '#E34F26' },
-  { name: 'CSS3',        icon: FaCss3Alt,     pct: 90, brandColor: '#1572B6' },
-  { name: 'React',       icon: FaReact,       pct: 90, brandColor: '#61DAFB' },
-  { name: 'Next.js',     icon: SiNextdotjs,   pct: 85, brandColor: '#FFFFFF' },
-  { name: 'TypeScript',  icon: SiTypescript,  pct: 70, brandColor: '#3178C6' },
-  { name: 'JavaScript',  icon: SiJavascript,  pct: 90, brandColor: '#F7DF1E' },
-  { name: 'Tailwind',    icon: SiTailwindcss, pct: 90, brandColor: '#06B6D4' },
-  { name: 'Vue.js',      icon: FaVuejs,       pct: 30, brandColor: '#17e75c' },
-  { name: 'Vite',        icon: SiVite,        pct: 80, brandColor: '#646CFF' },
-  { name: 'Node.js',     icon: FaNodeJs,      pct: 70, brandColor: '#339933' },
-  { name: 'MongoDB',     icon: SiMongodb,     pct: 65, brandColor: '#47A248' },
-  { name: 'PostgreSQL',  icon: SiPostgresql,  pct: 45, brandColor: '#4169E1' },
-  { name: 'Prisma',      icon: SiPrisma,      pct: 60, brandColor: '#2D3748' },
-  { name: 'Docker',      icon: SiDocker,      pct: 35, brandColor: '#2496ED' },
-  { name: 'Git',         icon: FaGitAlt,      pct: 75, brandColor: '#F05032' },
-  { name: 'Figma',       icon: FaFigma,       pct: 40, brandColor: '#F24E1E' },
-  { name: 'n8n / IA',   icon: SiN8N,         pct: 40, brandColor: '#EA4B71' },
-  { name: 'SQL',         icon: FaDatabase,    pct: 60, brandColor: '#00758F' },
+interface Category {
+  label: string
+  tag: string
+  skills: Skill[]
+}
+
+const categories: Category[] = [
+  {
+    label: 'Frontend',
+    tag: '01',
+    skills: [
+      { name: 'HTML5',      icon: FaHtml5,       brandColor: '#E34F26' },
+      { name: 'CSS3',       icon: FaCss3Alt,     brandColor: '#1572B6' },
+      { name: 'JavaScript', icon: SiJavascript,  brandColor: '#F7DF1E' },
+      { name: 'TypeScript', icon: SiTypescript,  brandColor: '#3178C6' },
+      { name: 'React',      icon: FaReact,       brandColor: '#61DAFB' },
+      { name: 'Next.js',    icon: SiNextdotjs,   brandColor: '#FFFFFF' },
+      { name: 'Vue.js',     icon: FaVuejs,       brandColor: '#42B883' },
+      { name: 'Tailwind',   icon: SiTailwindcss, brandColor: '#06B6D4' },
+      { name: 'Vite',       icon: SiVite,        brandColor: '#646CFF' },
+      { name: 'Figma',      icon: FaFigma,       brandColor: '#F24E1E' },
+    ],
+  },
+  {
+    label: 'Backend & Data',
+    tag: '02',
+    skills: [
+      { name: 'Node.js',    icon: FaNodeJs,      brandColor: '#339933' },
+      { name: 'PostgreSQL', icon: SiPostgresql,  brandColor: '#4169E1' },
+      { name: 'MongoDB',    icon: SiMongodb,     brandColor: '#47A248' },
+      { name: 'Prisma',     icon: SiPrisma,      brandColor: '#A0AEC0' },
+      { name: 'SQL',        icon: FaDatabase,    brandColor: '#00758F' },
+    ],
+  },
+  {
+    label: 'Tooling & Infra',
+    tag: '03',
+    skills: [
+      { name: 'Git',       icon: FaGitAlt, brandColor: '#F05032' },
+      { name: 'Docker',    icon: SiDocker, brandColor: '#2496ED' },
+      { name: 'n8n / IA', icon: SiN8N,    brandColor: '#EA4B71' },
+    ],
+  },
 ]
 
-function SkillCard({ skill, index }: { skill: Skill; index: number }) {
+function SkillPill({ skill, index }: { skill: Skill; index: number }) {
   const Icon = skill.icon
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.05 }}
-      className="group flex flex-col items-center gap-3 p-5 rounded-2xl
-                 bg-card border border-border
-                 hover:border-[var(--brand)] hover:bg-card/80
-                 transition-all duration-300 cursor-default"
+      transition={{ duration: 0.35, delay: index * 0.045 }}
+      whileHover={{ scale: 1.06 }}
+      className="group relative flex flex-col items-center gap-2.5 cursor-default select-none"
       style={{ '--brand': skill.brandColor } as React.CSSProperties}
     >
-      {/* Ícone */}
       <div
-        className="text-4xl text-muted-foreground/50 transition-colors duration-300 group-hover:text-[var(--brand)]"
-        style={{ filter: 'drop-shadow(0 0 0px transparent)' }}
+        className="
+          relative flex h-14 w-14 items-center justify-center
+          rounded-2xl border border-border bg-card
+          transition-all duration-300
+          group-hover:border-[var(--brand)]/40
+          group-hover:bg-[var(--brand)]/[0.06]
+        "
       >
+        <div
+          className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{ boxShadow: `0 0 20px 0 color-mix(in srgb, var(--brand) 25%, transparent)` }}
+        />
         <Icon
-          className="transition-[color,filter] duration-300 group-hover:[filter:drop-shadow(0_0_8px_var(--brand))]"
+          size={26}
+          className="relative z-10 text-muted-foreground transition-colors duration-300 group-hover:text-[var(--brand)]"
           aria-label={skill.name}
         />
       </div>
 
-      {/* Nome */}
-      <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors duration-300 text-center leading-tight">
+      <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/50 transition-colors duration-300 group-hover:text-muted-foreground">
         {skill.name}
       </span>
-
-      {/* Percentagem */}
-      <div className="w-full space-y-1">
-        <div className="flex justify-center">
-          <span className="text-[11px] font-mono text-muted-foreground/70 group-hover:text-[var(--brand)] transition-colors duration-300">
-            {skill.pct}%
-          </span>
-        </div>
-        {/* Barra de progresso */}
-        <div className="h-1 w-full rounded-full bg-muted overflow-hidden">
-          <motion.div
-            className="h-full rounded-full"
-            style={{ backgroundColor: skill.brandColor, opacity: 0.4 }}
-            initial={{ width: 0 }}
-            whileInView={{ width: `${skill.pct}%` }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: 'easeOut', delay: 0.3 + index * 0.04 }}
-          />
-        </div>
-      </div>
     </motion.div>
   )
 }
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-24 bg-muted/10 relative overflow-hidden">
-      {/* Decorative blobs */}
-      <div className="absolute top-1/4 left-0 w-72 h-72 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-72 h-72 bg-tertiary/5 rounded-full blur-3xl pointer-events-none" />
+    <section id="skills" className="relative overflow-hidden bg-background py-28">
 
-      <div className="container mx-auto px-6 relative z-10">
-        {/* Cabeçalho */}
-        <div className="text-center mb-16 flex flex-col items-center gap-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 w-fit">
-            <span className="text-xs font-mono text-secondary uppercase tracking-wider">Stack Técnico</span>
+      <div className="absolute top-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-border to-transparent" />
+
+      <div className="container mx-auto px-6">
+
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-20 flex flex-col gap-4"
+        >
+          <div className="flex items-center gap-3">
+            <span className="h-px w-8 bg-primary" />
+            <span className="text-xs uppercase tracking-[0.2em] text-primary">
+              Stack Técnico
+            </span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground leading-tight">
-            Tecnologias que <span className="text-secondary">domino</span>.
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl">
-            Ferramentas e linguagens que uso no dia a dia para construir produtos completos.
-          </p>
-        </div>
 
-        {/* Grid de cards centralizado */}
-        <div className="flex flex-wrap justify-center gap-3">
-          {skills.map((skill, i) => (
-            <div key={skill.name} className="w-[calc(33%-0.5rem)] sm:w-28 md:w-28">
-              <SkillCard skill={skill} index={i} />
-            </div>
+          <div className="flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between">
+            <h2
+              className="text-4xl font-bold leading-tight text-foreground md:text-5xl"
+            >
+              Tecnologias que{' '}
+              <span className="text-primary">domino</span>.
+            </h2>
+            <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
+              Do HTML ao Docker — ferramentas e linguagens que uso
+              para construir produtos completos, do banco à interface.
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Categorias */}
+        <div className="flex flex-col gap-16">
+          {categories.map((cat, catIdx) => (
+            <motion.div
+              key={cat.label}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: catIdx * 0.1 }}
+            >
+              <div className="mb-8 flex items-center gap-4">
+                <span className="font-mono text-[10px] text-muted-foreground/30">{cat.tag}</span>
+                <span className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground/50">
+                  {cat.label}
+                </span>
+                <div className="flex-1 border-t border-border" />
+              </div>
+
+              <div className="flex flex-wrap gap-x-8 gap-y-6">
+                {cat.skills.map((skill, i) => (
+                  <SkillPill key={skill.name} skill={skill} index={i} />
+                ))}
+              </div>
+            </motion.div>
           ))}
         </div>
+
+        {/* Footer da seção */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-20 flex items-center justify-between border-t border-border pt-8"
+        >
+          <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground/30">
+            Em constante evolução
+          </p>
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-40" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
+            </span>
+            <span className="font-mono text-[11px] text-muted-foreground/30">aprendendo ativamente</span>
+          </div>
+        </motion.div>
       </div>
+
+      <div className="absolute bottom-0 left-0 h-px w-full bg-linear-to-r from-transparent via-border to-transparent" />
     </section>
   )
 }

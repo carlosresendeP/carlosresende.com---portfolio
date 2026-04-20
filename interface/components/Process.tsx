@@ -1,21 +1,14 @@
 'use client'
 
 import { motion } from 'motion/react'
-import { Search, Palette, Code2, Rocket, ArrowDown, ArrowRight } from 'lucide-react'
-
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
+import { Search, Palette, Code2, Rocket } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 
 interface Step {
   number: string
-  icon: React.ElementType
+  icon: LucideIcon
   title: string
   description: string
-  colorClass: string          // ex: text-primary
-  bgClass: string             // ex: bg-primary/10
-  borderClass: string         // ex: border-primary/30
-  glowVar: string             // CSS var para o glow inline
 }
 
 const steps: Step[] = [
@@ -25,10 +18,6 @@ const steps: Step[] = [
     title: 'Pesquisa',
     description:
       'Analiso seu negócio, concorrentes e público-alvo para identificar necessidades reais e traçar a estratégia ideal antes de qualquer linha de código.',
-    colorClass: 'text-primary',
-    bgClass: 'bg-primary/10',
-    borderClass: 'border-primary/30',
-    glowVar: 'var(--color-primary)',
   },
   {
     number: '02',
@@ -36,10 +25,6 @@ const steps: Step[] = [
     title: 'Design',
     description:
       'Crio wireframes e protótipos com foco em clareza, usabilidade e identidade visual totalmente alinhada à sua marca.',
-    colorClass: 'text-secondary',
-    bgClass: 'bg-secondary/10',
-    borderClass: 'border-secondary/30',
-    glowVar: 'var(--color-secondary)',
   },
   {
     number: '03',
@@ -47,10 +32,6 @@ const steps: Step[] = [
     title: 'Desenvolvimento',
     description:
       'Transformo o design em interfaces reais com código limpo, performático e escalável usando as melhores tecnologias do mercado.',
-    colorClass: 'text-tertiary',
-    bgClass: 'bg-tertiary/10',
-    borderClass: 'border-tertiary/30',
-    glowVar: 'var(--color-tertiary)',
   },
   {
     number: '04',
@@ -58,172 +39,140 @@ const steps: Step[] = [
     title: 'Entrega',
     description:
       'Entrego o projeto finalizado com documentação, suporte pós-lançamento e garantia de qualidade em cada detalhe.',
-    colorClass: 'text-primary',
-    bgClass: 'bg-primary/10',
-    borderClass: 'border-primary/30',
-    glowVar: 'var(--color-primary)',
   },
 ]
 
 export default function Process() {
   return (
-    <section id="process" className="py-24 bg-background relative overflow-hidden">
-      {/* Blobs decorativos */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-tertiary/5 rounded-full blur-3xl pointer-events-none" />
+    <section id="process" className="py-24 bg-card/20 relative overflow-hidden">
 
-      <div className="container mx-auto px-6 relative z-10">
+      {/* Grid texture — matches system */}
+      <div className="absolute inset-0 pointer-events-none opacity-25 bg-[linear-gradient(to_right,#1E1E1E_1px,transparent_1px),linear-gradient(to_bottom,#1E1E1E_1px,transparent_1px)] bg-size-[80px_80px]" />
 
-        {/* ── Cabeçalho ── */}
-        <div className="flex flex-col items-center text-center gap-4 mb-20">
-          <Badge
-            variant="outline"
-            className="font-mono text-xs uppercase tracking-widest text-tertiary border-tertiary/30 bg-tertiary/10 px-3 py-1"
-          >
-            Como Trabalho
-          </Badge>
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-16">
 
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground leading-tight">
-            Meu processo de{' '}
-            <span className="text-tertiary">trabalho</span>.
-          </h2>
+        {/* Section header — 03 marker, matches editorial system */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex items-start gap-5 lg:gap-8 mb-14 lg:mb-16"
+        >
+          <div className="flex flex-col items-center gap-2 pt-2 shrink-0">
+            <span className="font-mono text-[10px] text-primary tracking-widest">03</span>
+            <div className="w-px h-16 bg-linear-to-b from-primary via-primary/25 to-transparent" />
+          </div>
 
-          <p className="text-muted-foreground text-lg max-w-2xl">
-            Um fluxo estruturado que garante qualidade, alinhamento e resultados
-            consistentes em cada projeto.
-          </p>
-        </div>
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 w-full">
+            <div>
+              <p className="font-mono text-[10px] text-primary tracking-[0.35em] uppercase mb-3">
+                Como Trabalho
+              </p>
+              <h2
+                className="font-black uppercase leading-none tracking-tight text-foreground"
+                style={{ fontSize: 'clamp(32px, 5.5vw, 64px)' }}
+              >
+                Meu processo de<br />
+                <span className='text-primary'>trabalho</span>
+              </h2>
+            </div>
+            <p className="text-sm text-muted-foreground max-w-xs leading-relaxed font-mono lg:text-right">
+              Um fluxo estruturado que garante qualidade, alinhamento e resultados
+              consistentes em cada projeto.
+            </p>
+          </div>
+        </motion.div>
 
-        {/* ── Roadmap ── */}
-        <div className="flex flex-col items-center gap-0">
+        {/* Full-width separator */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          style={{ transformOrigin: 'left' }}
+          className="w-full h-px bg-linear-to-r from-primary/50 via-border to-transparent mb-16"
+        />
+
+        {/* Timeline steps */}
+        <div className="flex flex-col">
           {steps.map((step, i) => {
             const Icon = step.icon
             const isLast = i === steps.length - 1
-            const isEven = i % 2 === 0
 
             return (
-              <div key={step.number} className="w-full flex flex-col items-center">
-
-                {/* Row: card + linha lateral (desktop alterna lados) */}
-                <div
-                  className={`w-full max-w-4xl flex flex-col md:flex-row gap-6 items-center
-                    ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}
-                  `}
-                >
-                  {/* ── Card ── */}
-                  <motion.div
-                    initial={{ opacity: 0, x: isEven ? -40 : 40 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.55, delay: i * 0.1 }}
-                    className="flex-1"
+              <motion.div
+                key={step.number}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="group flex gap-6 lg:gap-12"
+              >
+                {/* Left column: icon node + connecting line */}
+                <div className="flex flex-col items-center shrink-0">
+                  <div
+                    className="w-10 h-10 flex items-center justify-center border border-border
+                                bg-background group-hover:border-primary/50 group-hover:bg-primary/5
+                                transition-all duration-300 z-10"
                   >
-                    <Card
-                      className={`group relative overflow-hidden border ${step.borderClass}
-                        bg-card hover:shadow-2xl transition-all duration-500`}
-                      style={{
-                        ['--glow' as string]: step.glowVar,
-                      }}
-                    >
-                      {/* Glow de fundo ao hover */}
-                      <div
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                        style={{
-                          background: `radial-gradient(ellipse at ${isEven ? '0%' : '100%'} 50%, color-mix(in oklch, ${step.glowVar} 12%, transparent) 0%, transparent 70%)`,
-                        }}
-                      />
+                    <Icon size={16} strokeWidth={1.5} className="text-primary" />
+                  </div>
 
-                      <CardContent className="p-7 flex gap-5 items-start relative z-10">
-                        {/* Ícone */}
-                        <div
-                          className={`shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center
-                            border ${step.borderClass} ${step.bgClass} ${step.colorClass}
-                            group-hover:scale-110 transition-transform duration-300`}
-                        >
-                          <Icon size={26} strokeWidth={1.8} />
-                        </div>
-
-                        {/* Texto */}
-                        <div className="flex flex-col gap-2">
-                          <div className="flex items-center gap-3">
-                            <Badge
-                              variant="outline"
-                              className={`font-mono text-[10px] uppercase tracking-widest
-                                ${step.colorClass} ${step.borderClass} ${step.bgClass}`}
-                            >
-                              Etapa {step.number}
-                            </Badge>
-                          </div>
-
-                          <h3 className={`text-xl font-bold text-foreground group-hover:${step.colorClass} transition-colors duration-300`}>
-                            {step.title}
-                          </h3>
-
-                          <p className="text-sm text-muted-foreground leading-relaxed">
-                            {step.description}
-                          </p>
-                        </div>
-
-                        {/* Número decorativo de fundo */}
-                        <span
-                          className={`absolute bottom-3 right-5 text-7xl font-black font-mono
-                            opacity-[0.04] group-hover:opacity-[0.08] transition-opacity duration-300
-                            select-none pointer-events-none ${step.colorClass}`}
-                        >
-                          {step.number}
-                        </span>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-
-                  {/* ── Número do step (lado contrário) ── */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.1 + 0.15 }}
-                    className={`hidden md:flex shrink-0 w-20 h-20 rounded-full items-center justify-center
-                      border-2 ${step.borderClass} ${step.bgClass} relative`}
-                  >
-                    <span className={`text-2xl font-black font-mono ${step.colorClass}`}>
-                      {step.number}
-                    </span>
-                    {/* Pulse ring */}
-                    <span
-                      className={`absolute inset-0 rounded-full border-2 ${step.borderClass} animate-ping opacity-20`}
+                  {!isLast && (
+                    <motion.div
+                      initial={{ scaleY: 0 }}
+                      whileInView={{ scaleY: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.7, delay: i * 0.1 + 0.25, ease: [0.16, 1, 0.3, 1] }}
+                      style={{ transformOrigin: 'top' }}
+                      className="w-px flex-1 min-h-[72px] bg-linear-to-b from-primary/50 to-primary/10"
                     />
-                  </motion.div>
+                  )}
                 </div>
 
-                {/* ── Conector entre steps ── */}
-                {!isLast && (
-                  <motion.div
-                    initial={{ opacity: 0, scaleY: 0 }}
-                    whileInView={{ opacity: 1, scaleY: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.1 + 0.3 }}
-                    className="origin-top"
-                  >
-                    {/* Mobile: seta vertical */}
-                    <div className="flex md:hidden flex-col items-center py-2 gap-1">
-                      <Separator orientation="vertical" className="h-8 w-px" />
-                      <ArrowDown size={16} className="text-muted-foreground/40" />
-                    </div>
+                {/* Right column: content */}
+                <div className={`flex-1 min-w-0 pt-1 ${!isLast ? 'pb-14' : ''}`}>
 
-                    {/* Desktop: linha + seta com desvio para o lado certo */}
-                    <div
-                      className={`hidden md:flex flex-col items-center py-2 gap-1
-                        ${isEven ? 'ml-[calc(50%-2.5rem)]' : 'mr-[calc(50%-2.5rem)]'}`}
+                  {/* Step label + rule */}
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="font-mono text-[10px] text-primary tracking-[0.35em] uppercase shrink-0">
+                      Etapa {step.number}
+                    </span>
+                    <div className="flex-1 h-px bg-border/40 max-w-24" />
+                  </div>
+
+                  {/* Title */}
+                  <h3
+                    className="font-black uppercase tracking-tight text-foreground group-hover:text-primary
+                               transition-colors duration-200 leading-none mb-3"
+                    style={{ fontSize: 'clamp(24px, 3vw, 40px)' }}
+                  >
+                    {step.title}
+                  </h3>
+
+                  {/* Description + ghost number */}
+                  <div className="flex items-start justify-between gap-6">
+                    <p className="text-sm text-muted-foreground leading-relaxed max-w-lg">
+                      {step.description}
+                    </p>
+
+                    {/* Ghost number — desktop only */}
+                    <span
+                      className="hidden xl:block shrink-0 font-black font-mono select-none
+                                 text-foreground/4 group-hover:text-primary/[0.07]
+                                 transition-colors duration-300 leading-none"
+                      style={{ fontSize: 'clamp(56px, 5vw, 88px)' }}
                     >
-                      <Separator orientation="vertical" className="h-10 w-px opacity-40" />
-                      <ArrowDown size={16} className="text-muted-foreground/40" />
-                    </div>
-                  </motion.div>
-                )}
-              </div>
+                      {step.number}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
             )
           })}
         </div>
+
       </div>
     </section>
   )

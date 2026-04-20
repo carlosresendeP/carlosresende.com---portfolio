@@ -6,7 +6,7 @@ export const ProjectSchema = z.object({
   description: z.string(),
   tags: z.array(z.string()),
   category: z.enum(['frontend', 'fullstack']),
-  deploy: z.string().url(),
+  deploy: z.string().url().optional(),
   githubUrl: z.string().url(),
   img: z.string().startsWith('/').optional(),
 })

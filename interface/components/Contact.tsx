@@ -7,9 +7,6 @@ import { FaGithub, FaLinkedin, FaInstagram, FaWhatsapp } from 'react-icons/fa'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
-import { Card, CardContent } from '@/components/ui/card'
 import {
   Dialog,
   DialogContent,
@@ -56,8 +53,10 @@ const contactSchema = z.object({
     .default(''),
 })
 
-export default function Contact() {
+const inputClass =
+  'rounded-none border-border focus-visible:border-primary focus-visible:ring-0 bg-background font-mono text-sm placeholder:text-muted-foreground/40'
 
+export default function Contact() {
   const socialLinks: SocialLink[] = [
     { icon: FaGithub, href: 'https://github.com/carlosresendeP', label: 'GitHub' },
     { icon: FaLinkedin, href: 'https://www.linkedin.com/in/carlos-paula2001/', label: 'LinkedIn' },
@@ -81,7 +80,6 @@ export default function Contact() {
   function validate(): FormErrors {
     const result = contactSchema.safeParse(form)
     if (result.success) return {}
-
     return result.error.issues.reduce<FormErrors>((acc, issue) => {
       const field = issue.path[0] as keyof FormErrors
       if (!acc[field]) acc[field] = issue.message
@@ -91,13 +89,11 @@ export default function Contact() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-
     const validationErrors = validate()
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors)
       return
     }
-
     setLoading(true)
     try {
       const response = await fetch('/api/solicitation', {
@@ -105,11 +101,7 @@ export default function Contact() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       })
-
-      if (!response.ok) {
-        throw new Error('Falha ao enviar mensagem.')
-      }
-
+      if (!response.ok) throw new Error('Falha ao enviar mensagem.')
       setSuccessOpen(true)
       setForm({ name: '', email: '', subject: 'Landing Page', message: '', phone: '' })
       setErrors({})
@@ -122,62 +114,95 @@ export default function Contact() {
 
   return (
     <section id="contact" className="py-24 bg-background relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-16 flex flex-col items-center gap-4">
-          <Badge variant="outline" className="border-primary/30 text-primary font-mono text-xs px-3">
-            Contato
-          </Badge>
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground leading-tight">
-            Vamos <span className="text-primary">conversar</span>?
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl">
-            Estou pronto para transformar sua ideia em realidade. Entre em contato!
-          </p>
-        </div>
+      {/* Grid texture — matches system */}
+      <div className="absolute inset-0 pointer-events-none opacity-25 bg-[linear-gradient(to_right,#1E1E1E_1px,transparent_1px),linear-gradient(to_bottom,#1E1E1E_1px,transparent_1px)] bg-size-[80px_80px]" />
 
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
-          {/* Info de contato */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-16">
+
+        {/* Section header — 07 marker */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex items-start gap-5 lg:gap-8 mb-14 lg:mb-16"
+        >
+          <div className="flex flex-col items-center gap-2 pt-2 shrink-0">
+            <span className="font-mono text-[10px] text-primary tracking-widest">07</span>
+            <div className="w-px h-16 bg-linear-to-b from-primary via-primary/25 to-transparent" />
+          </div>
+
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 w-full">
+            <div>
+              <p className="font-mono text-[10px] text-primary tracking-[0.35em] uppercase mb-3">Contato</p>
+              <h2 className="font-black uppercase leading-none tracking-tight text-foreground text-5xl lg:text-6xl xl:text-7xl">
+                Vamos<br />
+                <span className="text-primary">conversar?</span>
+              </h2>
+            </div>
+            <p className="text-sm text-muted-foreground max-w-xs leading-relaxed font-mono lg:text-right">
+              Estou pronto para transformar sua ideia em realidade. Entre em contato!
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Separator */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full h-px bg-linear-to-r from-primary/50 via-border to-transparent mb-0 origin-left"
+        />
+
+        {/* Two-column layout — gap-px wall grid */}
+        <div className="grid lg:grid-cols-[2fr_3fr] gap-px bg-border border border-t-0 border-border">
+
+          {/* Left: contact info + socials */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="flex justify-center items-start flex-col gap-8"
+            transition={{ duration: 0.6 }}
+            className="bg-background p-8 lg:p-10 flex flex-col"
           >
-            {[
-              { icon: Mail, label: 'E-mail', value: 'dev.carlosresende@hotmail.com', href: 'mailto:dev.carlosresende@hotmail.com' },
-              { icon: Phone, label: 'WhatsApp', value: '+55 (32) *****-****', href: 'https://wa.me/5532998283189' },
-              { icon: MapPin, label: 'Localização', value: 'Juiz de Fora, MG — Brasil', href: undefined },
-            ].map(({ icon: Icon, label, value, href }) => (
-              <div key={label} className="flex items-center gap-5 group">
-                <div className="size-14 rounded-2xl bg-muted flex items-center justify-center border border-border group-hover:border-primary/50 transition-colors shrink-0">
-                  <Icon size={22} className="text-primary" />
+            {/* Contact rows — spec-sheet style */}
+            <div className="flex flex-col mb-8">
+              {[
+                { icon: Mail, label: 'E-mail', value: 'dev.carlosresende@hotmail.com', href: 'mailto:dev.carlosresende@hotmail.com' },
+                { icon: Phone, label: 'WhatsApp', value: `+55 (32) ${process.env.NEXT_PUBLIC_PHONE_NUMBER}`, href: `https://wa.me/5532${process.env.NEXT_PUBLIC_PHONE_NUMBER}` },
+                { icon: MapPin, label: 'Localização', value: 'Juiz de Fora, MG — Brasil', href: undefined },
+              ].map(({ icon: Icon, label, value, href }) => (
+                <div key={label} className="group flex items-start gap-4 py-5 border-b border-border/40 last:border-0">
+                  <div className="w-9 h-9 flex items-center justify-center border border-border bg-background group-hover:border-primary/40 group-hover:bg-primary/5 transition-all duration-300 shrink-0 mt-0.5">
+                    <Icon size={14} strokeWidth={1.5} className="text-primary" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-mono text-[9px] text-muted-foreground uppercase tracking-widest mb-1">{label}</p>
+                    {href ? (
+                      <a
+                        href={href}
+                        target={href.startsWith('http') ? '_blank' : undefined}
+                        rel="noopener noreferrer"
+                        className="text-sm font-bold text-foreground hover:text-primary transition-colors break-all"
+                      >
+                        {value}
+                      </a>
+                    ) : (
+                      <p className="text-sm font-bold text-foreground">{value}</p>
+                    )}
+                  </div>
                 </div>
-                <div>
-                  <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-0.5">{label}</p>
-                  {href ? (
-                    <a
-                      href={href}
-                      target={href.startsWith('http') ? '_blank' : undefined}
-                      rel="noopener noreferrer"
-                      className="font-bold text-foreground hover:text-primary transition-colors text-sm md:text-lg"
-                    >
-                      {value}
-                    </a>
-                  ) : (
-                    <p className="font-bold text-foreground text-sm md:text-lg">{value}</p>
-                  )}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
 
-            <Separator />
-
+            {/* Social links */}
             <div>
-              <p className="text-muted-foreground mb-4 text-sm">Redes sociais:</p>
-              <div className="flex gap-3">
+              <p className="font-mono text-[9px] text-muted-foreground uppercase tracking-widest mb-4">
+                Redes sociais
+              </p>
+              <div className="flex gap-2">
                 {socialLinks.map(({ icon: Icon, href, label }: SocialLink) => (
                   <a
                     key={label}
@@ -185,160 +210,173 @@ export default function Contact() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={label}
-                    className="size-12 rounded-xl bg-muted flex items-center justify-center border border-border hover:border-accent/50 hover:bg-accent/50 hover:text-foreground  transition-all duration-300"
+                    className="w-9 h-9 flex items-center justify-center border border-border text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-primary/5 transition-all duration-300"
                   >
-                    <Icon size={20} />
+                    <Icon size={15} />
                   </a>
                 ))}
               </div>
             </div>
           </motion.div>
 
-          {/* Formulário com Card shadcn */}
+          {/* Right: form */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="bg-background p-8 lg:p-10"
           >
-            <Card className="border-border shadow-2xl shadow-primary/5 rounded-3xl">
-              <CardContent className="p-8">
-                <form onSubmit={handleSubmit} noValidate>
-                  <FieldGroup className="gap-5">
-                    <div className="grid md:grid-cols-2 gap-5">
-                      <Field data-invalid={!!errors.name}>
-                        <FieldLabel htmlFor="name" className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
-                          Nome *
-                        </FieldLabel>
-                        <Input
-                          id="name"
-                          name="name"
-                          value={form.name}
-                          onChange={handleChange}
-                          placeholder="Seu nome"
-                          aria-invalid={!!errors.name}
-                        />
-                        <FieldError>{errors.name}</FieldError>
-                      </Field>
+            <form onSubmit={handleSubmit} noValidate>
+              <FieldGroup className="gap-5">
 
-                      <Field data-invalid={!!errors.email}>
-                        <FieldLabel htmlFor="email" className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
-                          E-mail *
-                        </FieldLabel>
-                        <Input
-                          id="email"
-                          name="email"
-                          type="email"
-                          value={form.email}
-                          onChange={handleChange}
-                          placeholder="seu@email.com"
-                          aria-invalid={!!errors.email}
-                        />
-                        <FieldError>{errors.email}</FieldError>
-                      </Field>
-                    </div>
+                <div className="grid md:grid-cols-2 gap-5">
+                  <Field data-invalid={!!errors.name}>
+                    <FieldLabel htmlFor="name" className="font-mono text-[10px] text-muted-foreground uppercase tracking-widest">
+                      Nome *
+                    </FieldLabel>
+                    <Input
+                      id="name"
+                      name="name"
+                      value={form.name}
+                      onChange={handleChange}
+                      placeholder="Seu nome"
+                      aria-invalid={!!errors.name}
+                      className={inputClass}
+                    />
+                    <FieldError>{errors.name}</FieldError>
+                  </Field>
 
-                    <Field>
-                      <FieldLabel htmlFor="phone" className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
-                        Telefone
-                      </FieldLabel>
-                      <Input
-                        id="phone"
-                        name="phone"
-                        value={form.phone}
-                        onChange={handleChange}
-                        placeholder="Seu telefone"
-                        aria-invalid={!!errors.phone}
-                      />
-                      <FieldError>{errors.phone}</FieldError> 
-                    </Field>
+                  <Field data-invalid={!!errors.email}>
+                    <FieldLabel htmlFor="email" className="font-mono text-[10px] text-muted-foreground uppercase tracking-widest">
+                      E-mail *
+                    </FieldLabel>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={form.email}
+                      onChange={handleChange}
+                      placeholder="seu@email.com"
+                      aria-invalid={!!errors.email}
+                      className={inputClass}
+                    />
+                    <FieldError>{errors.email}</FieldError>
+                  </Field>
+                </div>
 
-                    <Field>
-                      <FieldLabel htmlFor="subject" className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
-                        Assunto
-                      </FieldLabel>
-                      <select
-                        id="subject"
-                        name="subject"
-                        value={form.subject}
-                        onChange={handleChange}
-                        className="w-full px-3 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm text-foreground"
-                      >
-                        <option value="Landing Page">Landing page</option>
-                        <option value="Business Pro">Site Institucional</option>
-                        <option value="SaaS Customizado">Sistema com IA</option>
-                        <option value="Automação com IA">SaaS Customizado</option>
-                        <option value="Outro">Outro</option>
-                      </select>
-                    </Field>
+                <Field>
+                  <FieldLabel htmlFor="phone" className="font-mono text-[10px] text-muted-foreground uppercase tracking-widest">
+                    Telefone
+                  </FieldLabel>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    value={form.phone}
+                    onChange={handleChange}
+                    placeholder="Seu telefone"
+                    aria-invalid={!!errors.phone}
+                    className={inputClass}
+                  />
+                  <FieldError>{errors.phone}</FieldError>
+                </Field>
 
-                    <Field data-invalid={!!errors.message}>
-                      <FieldLabel htmlFor="message" className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
-                        Mensagem *
-                      </FieldLabel>
-                      <Textarea
-                        id="message"
-                        name="message"
-                        value={form.message}
-                        onChange={handleChange}
-                        placeholder="Descreva seu projeto..."
-                        rows={4}
-                        aria-invalid={!!errors.message}
-                      />
-                      <FieldError>{errors.message}</FieldError>
-                    </Field>
+                <Field>
+                  <FieldLabel htmlFor="subject" className="font-mono text-[10px] text-muted-foreground uppercase tracking-widest">
+                    Assunto
+                  </FieldLabel>
+                  <select
+                    id="subject"
+                    name="subject"
+                    value={form.subject}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 bg-background border border-border hover:border-primary/40 focus:border-primary outline-none transition-colors font-mono text-sm text-foreground appearance-none cursor-pointer"
+                  >
+                    <option value="Landing Page">Landing page</option>
+                    <option value="Business Pro">Site Institucional</option>
+                    <option value="SaaS Customizado">Sistema com IA</option>
+                    <option value="Automação com IA">SaaS Customizado</option>
+                    <option value="Outro">Outro</option>
+                  </select>
+                </Field>
 
-                    <Button
-                      type="submit"
-                      disabled={loading}
-                      className="w-full bg-primary hover:bg-primary/90 text-white rounded-xl font-bold gap-2 py-6"
-                    >
-                      {loading ? (
-                        <span className="flex items-center gap-2">
-                          <svg className="animate-spin size-4" viewBox="0 0 24 24" fill="none">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                          </svg>
-                          Enviando...
-                        </span>
-                      ) : (
-                        <>
-                          Enviar Mensagem
-                          <Send size={16} />
-                        </>
-                      )}
-                    </Button>
-                  </FieldGroup>
-                </form>
-              </CardContent>
-            </Card>
+                <Field data-invalid={!!errors.message}>
+                  <FieldLabel htmlFor="message" className="font-mono text-[10px] text-muted-foreground uppercase tracking-widest">
+                    Mensagem *
+                  </FieldLabel>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    value={form.message}
+                    onChange={handleChange}
+                    placeholder="Descreva seu projeto..."
+                    rows={4}
+                    aria-invalid={!!errors.message}
+                    className={`${inputClass} resize-none`}
+                  />
+                  <FieldError>{errors.message}</FieldError>
+                </Field>
+
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-primary hover:bg-success text-primary-foreground 
+                  hover:shadow-success hover:shadow-sm hover:text-foreground 
+                  font-bold gap-2 py-6 rounded-none transition-all duration-300"
+                >
+                  {loading ? (
+                    <span className="flex items-center gap-2">
+                      <svg className="animate-spin size-4" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                      </svg>
+                      Enviando...
+                    </span>
+                  ) : (
+                    <>
+                      Enviar Mensagem
+                      <Send size={16} />
+                    </>
+                  )}
+                </Button>
+
+              </FieldGroup>
+            </form>
           </motion.div>
+
         </div>
       </div>
 
       {/* Dialog de sucesso */}
       <Dialog open={successOpen} onOpenChange={setSuccessOpen}>
-        <DialogContent className="max-w-md text-center">
-          <DialogHeader className="items-center gap-4">
-            <div className="size-16 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center">
-              <CheckCircle2 size={32} className="text-green-500" />
+        <DialogContent className="max-w-md">
+          <DialogHeader className="gap-4">
+            <div className="w-12 h-12 border border-primary/30 bg-primary/10 flex items-center justify-center">
+              <CheckCircle2 size={24} className="text-primary" />
             </div>
-            <DialogTitle className="text-2xl font-bold text-foreground">
-              Mensagem enviada! 🎉
+            <DialogTitle className="text-xl font-bold text-foreground">
+              Mensagem enviada!
             </DialogTitle>
-            <DialogDescription className="text-muted-foreground text-base">
-              Obrigado pelo contato! Responderei em até <strong className="text-foreground">24 horas</strong>. Fique de olho no seu e-mail.
+            <DialogDescription className="text-muted-foreground text-sm leading-relaxed">
+              Obrigado pelo contato! Responderei em até{' '}
+              <strong className="text-foreground">24 horas</strong>. Fique de olho no seu e-mail.
             </DialogDescription>
           </DialogHeader>
-
           <div className="flex flex-col gap-3 mt-2">
-            <Button asChild className="bg-green-500 hover:bg-green-400 text-white rounded-xl gap-2">
+            <Button
+              asChild
+              className="w-full bg-green-600 hover:bg-green-500 text-white rounded-none gap-2 font-bold"
+            >
               <a href="https://wa.me/5532998283189" target="_blank" rel="noopener noreferrer">
                 <FaWhatsapp size={16} />
                 Conversar no WhatsApp
               </a>
             </Button>
-            <Button variant="outline" onClick={() => setSuccessOpen(false)} className="rounded-xl">
+            <Button
+              variant="outline"
+              onClick={() => setSuccessOpen(false)}
+              className="rounded-none font-bold"
+            >
               Fechar
             </Button>
           </div>

@@ -20,7 +20,7 @@ model Project {
   description String
   tags        String[]
   category    String
-  deploy      String
+  deploy      String?
   githubUrl   String
   img         String?
 }

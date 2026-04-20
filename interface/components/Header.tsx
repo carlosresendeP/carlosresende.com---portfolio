@@ -51,7 +51,7 @@ export const Header = () => {
         'fixed w-[80%] top-3 left-1/2 -translate-x-1/2 z-50 py-3 px-2 rounded-full shadow-lg  transition-all duration-300',
         isScrolled
           ? 'bg-card/30 backdrop-blur-xl shadow-lg shadow-primary/20'
-          : 'py-5 bg-card shadow-primary/10'
+          : 'py-5 bg-card/60 backdrop-blur-sm shadow-background/50'
       )}
     >
       <div className="w-full max-w-3xl mx-auto flex items-center justify-center gap-6">
@@ -75,7 +75,8 @@ export const Header = () => {
                   href={link.href}
                   className={cn(
                     navigationMenuTriggerStyle(),
-                    'text-muted-foreground hover:text-foreground text-xs font-medium bg-transparent hover:bg-accent/20 h-8 px-3'
+                    `text-muted-foreground hover:text-foreground text-xs font-medium bg-transparent hover:bg-accent/20 h-8 px-3`,
+                    isScrolled ? 'text-card-foreground' : 'text-foreground'
                   )}
                 >
                   {link.name}
@@ -134,7 +135,7 @@ export const Header = () => {
                 <Separator className="my-4" />
 
                 <SheetClose asChild>
-                  <Button asChild className="w-full bg-primary hover:bg-accent hover:text-accent text-white rounded-xl font-semibold">
+                  <Button asChild className="w-full bg-primary text-white rounded-xl font-semibold hover:bg-success/90 hover:text-foreground hover:shadow-md hover:shadow-success/20">
                     <a href="#contact">Iniciar Projeto →</a>
                   </Button>
                 </SheetClose>

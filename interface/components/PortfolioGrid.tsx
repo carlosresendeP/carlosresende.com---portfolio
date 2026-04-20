@@ -1,19 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
-import { ExternalLink, Filter } from 'lucide-react'
+import { useRef, useState } from 'react'
+import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react'
+import { ArrowUpRight } from 'lucide-react'
 import { FaGithub } from 'react-icons/fa'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
 import Image from 'next/image'
 
 interface Project {
@@ -22,7 +12,7 @@ interface Project {
   description: string
   tags: string[]
   category: string
-  deploy: string
+  deploy?: string
   githubUrl: string
   img?: string | null
 }
@@ -35,139 +25,166 @@ const filterOptions: { label: string; value: FilterValue }[] = [
   { label: 'Full Stack', value: 'fullstack' },
 ]
 
-const tagVariantMap: Record<string, string> = {
-  'Next.js': 'bg-foreground/10 text-foreground',
-  TypeScript: 'bg-primary/10 text-primary',
-  React: 'bg-secondary/10 text-secondary',
-  MongoDB: 'bg-green-500/10 text-green-400',
-  Supabase: 'bg-emerald-500/10 text-emerald-400',
-  IA: 'bg-purple-500/10 text-purple-400',
-  SaaS: 'bg-yellow-500/10 text-yellow-400',
-  'Node.js': 'bg-green-600/10 text-green-500',
-  Tailwind: 'bg-sky-500/10 text-sky-400',
-  n8n: 'bg-orange-500/10 text-orange-400',
-  Chatbot: 'bg-pink-500/10 text-pink-400',
-  API: 'bg-blue-500/10 text-blue-400',
-  'Styled Components': 'bg-tertiary/10 text-tertiary',
-  JavaScript: 'bg-yellow-400/10 text-yellow-400',
-}
+const spring = { damping: 28, stiffness: 90, mass: 1.8 }
 
-function getTagClass(tag: string): string {
-  return tagVariantMap[tag] ?? 'bg-muted text-muted-foreground'
+function TiltCard({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const rX = useSpring(useMotionValue(0), spring)
+  const rY = useSpring(useMotionValue(0), spring)
+  const sc = useSpring(1, spring)
+
+  function onMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (!ref.current) return
+    const r = ref.current.getBoundingClientRect()
+    rX.set(((e.clientY - r.top - r.height / 2) / (r.height / 2)) * -5)
+    rY.set(((e.clientX - r.left - r.width / 2) / (r.width / 2)) * 5)
+  }
+
+  return (
+    <div
+      ref={ref}
+      style={{ perspective: '1000px' }}
+      onMouseMove={onMove}
+      onMouseEnter={() => sc.set(1.018)}
+      onMouseLeave={() => { sc.set(1); rX.set(0); rY.set(0) }}
+    >
+      <motion.div style={{ rotateX: rX, rotateY: rY, scale: sc, transformStyle: 'preserve-3d' }}>
+        {children}
+      </motion.div>
+    </div>
+  )
 }
 
 export default function PortfolioGrid({ projects }: { projects: Project[] }) {
-  const [activeFilter, setActiveFilter] = useState<FilterValue>('all')
-
-  const filtered =
-    activeFilter === 'all' ? projects : projects.filter((p) => p.category === activeFilter)
+  const [active, setActive] = useState<FilterValue>('all')
+  const filtered = active === 'all' ? projects : projects.filter((p) => p.category === active)
 
   return (
-    <>
-      {/* Filtros */}
-      <div className="flex items-center justify-center gap-3 mb-12 flex-wrap">
-        <Filter size={14} className="text-muted-foreground" />
+    <div>
+      {/* Filter tabs — editorial underline style */}
+      <div className="flex items-end gap-0 border-b border-border mb-0">
         {filterOptions.map((opt) => (
-          <Button
+          <button
             key={opt.value}
-            size="sm"
-            variant={activeFilter === opt.value ? 'default' : 'outline'}
-            onClick={() => setActiveFilter(opt.value)}
-            className={`rounded-full text-xs transition-all ${
-              activeFilter === opt.value
-                ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20'
-                : ''
-            }`}
+            onClick={() => setActive(opt.value)}
+            className={`relative px-5 py-3 font-mono text-[11px] uppercase tracking-[0.25em] transition-colors duration-200
+              ${active === opt.value
+                ? 'text-primary'
+                : 'text-muted-foreground hover:text-foreground/70'
+              }`}
           >
             {opt.label}
-          </Button>
+            {active === opt.value && (
+              <motion.div
+                layoutId="filter-underline"
+                className="absolute bottom-[-1px] left-0 right-0 h-px bg-primary"
+                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              />
+            )}
+          </button>
         ))}
+        <span className="ml-auto pb-3 font-mono text-[10px] text-muted-foreground/30 tabular-nums">
+          {filtered.length} projeto{filtered.length !== 1 ? 's' : ''}
+        </span>
       </div>
 
-      {/* Grid */}
-      <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <AnimatePresence>
+      {/* Grid — gap-px wall technique, matches Services */}
+      <motion.div
+        layout
+        className="grid sm:grid-cols-2 gap-px bg-border border border-t-0 border-border"
+      >
+        <AnimatePresence mode="popLayout">
           {filtered.map((project, i) => (
             <motion.div
               key={project.id}
               layout
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.3, delay: i * 0.06 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              transition={{ duration: 0.3, delay: i * 0.05 }}
             >
-              <Card className="h-full mt-0 pt-0 group flex justify-between hover:ring-primary/30 transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 border-border">
-                {/* Imagem */}
-                <div className="relative h-40 overflow-hidden rounded-t-xl bg-linear-to-br from-card to-muted">
-                  {project.img ? (
-                    <Image
-                      src={project.img}
-                      alt={project.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  ) : (
-                    <div className="absolute inset-0 bg-linear-to-br from-primary/20 via-secondary/10 to-tertiary/20" />
-                  )}
-                  {/* Overlay com links no hover */}
-                  <div className="absolute inset-0 bg-background/85 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Button size="sm" asChild className="bg-primary hover:bg-primary/90 text-white rounded-xl gap-1.5">
-                      <a href={project.deploy} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink size={13} />
-                        Ver Live
-                      </a>
-                    </Button>
-                    <Button size="sm" variant="outline" asChild className="rounded-xl gap-1.5">
-                      <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                        <FaGithub size={13} />
+              <TiltCard>
+                <div className="group relative flex flex-col overflow-hidden bg-background hover:bg-card transition-colors duration-300">
+
+                  {/* Full-bleed image area */}
+                  <div className="relative h-52 overflow-hidden bg-card">
+                    {project.img ? (
+                      <Image
+                        src={project.img}
+                        alt={project.title}
+                        fill
+                        sizes="(max-width: 640px) 100vw, 50vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-linear-to-br from-primary/8 via-card to-background flex items-center justify-center">
+                        <span
+                          className="font-black font-mono text-foreground/4 select-none"
+                          style={{ fontSize: '80px', lineHeight: 1 }}
+                        >
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Hover overlay: action links */}
+                    <div className="absolute inset-0 flex items-center justify-center gap-3 bg-background/80 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+                      {project.deploy && (
+                        <a
+                          href={project.deploy}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-all hover:bg-primary/90"
+                        >
+                          <ArrowUpRight size={13} />
+                          Ver Live
+                        </a>
+                      )}
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 border border-border bg-background px-4 py-2 text-xs font-semibold text-foreground/80 transition-all hover:border-primary/30 hover:text-foreground"
+                      >
+                        <FaGithub size={12} />
                         GitHub
                       </a>
-                    </Button>
+                    </div>
+
+                    {/* Project index */}
+                    <span className="absolute left-3 top-3 bg-background/70 px-2 py-0.5 font-mono text-[10px] text-muted-foreground/60 backdrop-blur-sm">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
                   </div>
+
+                  {/* Content bar */}
+                  <div className="flex flex-col gap-2 p-5 border-t border-border/40">
+                    <h3 className="text-sm font-bold text-foreground uppercase tracking-tight group-hover:text-primary transition-colors duration-200 leading-snug">
+                      {project.title}
+                    </h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
+                      {project.description}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {project.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2 py-0.5 font-mono text-[10px] border border-border/50 text-muted-foreground bg-muted/10"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Bottom accent line on hover */}
+                  <div className="absolute bottom-0 left-0 h-px w-0 bg-primary transition-all duration-300 group-hover:w-full" />
                 </div>
-
-                <CardHeader>
-                  <CardTitle className="text-foreground group-hover:text-primary transition-colors">
-                    {project.title}
-                  </CardTitle>
-                  <CardDescription>{project.description}</CardDescription>
-                </CardHeader>
-
-                <CardContent>
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className={`px-2 py-0.5 rounded-md text-[11px] font-mono font-medium ${getTagClass(tag)}`}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </CardContent>
-
-                <Separator />
-
-                <CardFooter className="pt-4 gap-2">
-                  <Button size="sm" variant="ghost" asChild className="flex-1 gap-1.5 text-xs">
-                    <a href={project.deploy} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink size={12} />
-                      Deploy
-                    </a>
-                  </Button>
-                  <Button size="sm" variant="ghost" asChild className="flex-1 gap-1.5 text-xs">
-                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                      <FaGithub size={12} />
-                      Código
-                    </a>
-                  </Button>
-                </CardFooter>
-              </Card>
+              </TiltCard>
             </motion.div>
           ))}
         </AnimatePresence>
       </motion.div>
-    </>
+    </div>
   )
 }

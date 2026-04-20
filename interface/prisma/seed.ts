@@ -121,7 +121,7 @@ const projects = [
       "Projeto completo de hamburgueria com sistema de pedidos, pagamentos e gerenciamento — frontend separado do backend (fullstack).",
     tags: ["React", "Node.js", "MongoDB", "Postgres", "Stripe"],
     category: "fullstack",
-    deploy: "#",
+    deploy: undefined,
     githubUrl: "https://github.com/carlosresendeP/DevBurger-Interface",
     img: "/projects-images/mockup-DevBurger.png",
   },

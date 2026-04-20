@@ -14,7 +14,7 @@ const socialLinks: SocialLink[] = [
   { icon: FaGithub, href: 'https://github.com/carlosresendeP', label: 'GitHub' },
   { icon: FaLinkedin, href: 'https://www.linkedin.com/in/carlos-paula2001/', label: 'LinkedIn' },
   { icon: FaInstagram, href: 'https://www.instagram.com/dev_carlosresende/', label: 'Instagram' },
-  { icon: FaWhatsapp, href: 'https://wa.me/5532998283189', label: 'WhatsApp' },
+  { icon: FaWhatsapp, href: `https://wa.me/5532${process.env.NEXT_PUBLIC_PHONE_NUMBER}`, label: 'WhatsApp' },
 ]
 
 export const Footer = () => {
@@ -76,7 +76,7 @@ export const Footer = () => {
               Tem um projeto em mente? Entre em contato e receba uma proposta personalizada.
             </p>
             <a
-              href="https://wa.me/5532998283189?text=Ol%C3%A1! Gostaria de um or%C3%A7amento gratuito."
+              href={`https://wa.me/5532${process.env.NEXT_PUBLIC_PHONE_NUMBER}?text=Ol%C3%A1! Gostaria de um or%C3%A7amento gratuito.`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary/10 border border-primary/20 text-primary hover:bg-accent/20 hover:border-accent hover:text-foreground transition-colors text-sm font-medium"

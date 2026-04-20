@@ -14,7 +14,7 @@ export async function getPortfolioProjects(): Promise<Project[]> {
       const result = ProjectSchema.safeParse(item);
       
       if (!result.success) {
-        console.error(`[ProjectService] Erro de validação no projeto ID: ${item.id}`, result.error.format());
+        console.error(`[ProjectService] Erro de validação no projeto ID: ${item.id}`, result.error.issues);
         return null;
       }
       

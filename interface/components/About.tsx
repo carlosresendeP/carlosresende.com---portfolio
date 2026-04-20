@@ -1,124 +1,210 @@
 'use client'
 
-import { motion } from 'motion/react'
+import { motion, useScroll, useTransform } from 'motion/react'
 import Image from 'next/image'
-import { ArrowRight, Download } from 'lucide-react'
-import { Button } from './ui/button'
+import { ArrowRight, Download, MapPin } from 'lucide-react'
+import { useRef } from 'react'
 
+const skills: string[] = [
+  'TypeScript', 'React', 'Next.js', 'Node.js',
+  'Tailwind', 'PostgreSQL', 'MongoDB', 'Prisma ORM',
+  'Docker', 'Vue.js', 'IA', 'Git',
+]
 
 export default function About() {
-
-  const skills: string[] = [
-    'HTML', 'CSS', 'JavaScript','TypeScript', 'React', 'Next.js', 'Node.js', 'Tailwind', 'MongoDB', 'PostgreSQL', 'Vue.js', 'prisma ORM', 'Docker','Git', 'IA'
-  ] 
+  const sectionRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  })
+  const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '8%'])
 
   return (
-    <section id="about" className="py-24 bg-background relative overflow-hidden">
-      {/* Decoração */}
-      <div className="absolute -bottom-6 right-0 w-64 h-64 bg-secondary/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -top-6 left-0 w-64 h-64 bg-tertiary/10 rounded-full blur-3xl pointer-events-none" />
+    <section
+      id="about"
+      ref={sectionRef}
+      className="relative min-h-screen overflow-hidden bg-background"
+    >
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      {/* Glow accent */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-32 left-1/2 z-0 h-[500px] w-[500px] -translate-x-1/2 rounded-full"
+        style={{
+          background: 'radial-gradient(circle, rgba(0,229,160,0.06) 0%, transparent 70%)',
+        }}
+      />
 
-          {/* Imagem à esquerda */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="relative"
-          >
-            <div className="relative h-screen max-w-lg mx-auto lg:mx-0 overflow-hidden rounded-2xl border border-border group">
+      <div className="container relative z-10 mx-auto grid min-h-screen lg:grid-cols-[1fr_1.1fr] items-stretch">
+
+        {/* ── COLUNA ESQUERDA — Imagem ── */}
+        <div className="relative hidden lg:block">
+          {/* Label lateral */}
+          <div className="absolute left-6 top-1/2 z-20 -translate-y-1/2 -rotate-90 origin-center">
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-foreground/20">
+              Carlos Resende — Full Stack Dev
+            </span>
+          </div>
+
+          {/* Foto com parallax */}
+          <div className="relative h-full overflow-hidden">
+            <motion.div style={{ y: imageY }} className="absolute inset-0">
               <Image
                 src="/carlos.png"
                 alt="Carlos Resende"
                 fill
-                sizes="(max-width: 768px) 100vw, 448px"
-                className="object-cover h-full transition-transform duration-500 group-hover:scale-105"
-                referrerPolicy="no-referrer"
+                sizes="20vw"
+                className="h-[70%] object-cover object-top"
+                priority
               />
-              <div className="absolute inset-0 bg-background/20 group-hover:bg-transparent transition-colors duration-500" />
-            </div>
+              {/* Overlay gradiente */}
+              <div className="absolute inset-0 bg-linear-to-r from-transparent via-transparent to-background" />
+              <div className="absolute inset-0 bg-linear-to-t from-background via-transparent to-transparent" />
+            </motion.div>
+          </div>
 
-            {/* Badge flutuante */}
-            <div className="absolute -bottom-4  px-4 py-3 rounded-2xl bg-card border border-border shadow-xl backdrop-blur-sm">
-              <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-0.5">Status</p>
-              <div className="flex items-center gap-2">
-                <span className="relative flex size-2">
-                  <span className="animate-ping absolute h-full w-full rounded-full bg-green-400 opacity-75" />
-                  <span className="relative flex size-2 rounded-full bg-green-500" />
-                </span>
-                <span className="text-sm font-semibold text-foreground">Disponível</span>
-              </div>
-            </div>
-
-            {/* Elementos decorativos */}
-            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-secondary/20 rounded-full blur-3xl" />
-            <div className="absolute -top-6 -left-6 w-32 h-32 bg-tertiary/20 rounded-full blur-3xl" />
+          {/* Badge de status */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="absolute bottom-10 left-10 z-20 flex items-center gap-3 rounded-2xl border border-border bg-card/60 px-4 py-3 backdrop-blur-md"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+            </span>
+            <span className="font-mono text-xs text-foreground/80">Disponível para projetos</span>
           </motion.div>
 
-          {/* Texto à direita */}
+          {/* Localização */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.7 }}
+            className="absolute bottom-10 right-6 z-20 flex items-center gap-1.5"
+          >
+            <MapPin size={11} className="text-foreground/30" />
+            <span className="font-mono text-[10px] text-foreground/30 uppercase tracking-widest">Juiz de Fora, BR</span>
+          </motion.div>
+        </div>
+
+        {/* ── COLUNA DIREITA — Conteúdo ── */}
+        <div className="flex flex-col justify-center px-8 py-24 lg:px-16">
+
+          {/* Eyebrow */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
-            className="flex flex-col gap-6"
+            transition={{ duration: 0.5 }}
+            className="mb-8 flex items-center gap-3"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 w-fit">
-              <span className="text-xs font-mono text-primary uppercase tracking-wider">Sobre mim</span>
-            </div>
+            <span className="h-px w-8 bg-primary" />
+            <span className="text-xs uppercase tracking-[0.2em] text-primary">
+              Sobre mim
+            </span>
+          </motion.div>
+
+          {/* Nome — tipografia forte */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="mb-6"
+          >
+            <h2
+              className="text-5xl font-bold leading-[1.05] tracking-tight text-foreground lg:text-6xl"
+            >
+              Carlos<br />
+              <span className="text-primary">Resende</span>
+            </h2>
+            <p className="mt-3 font-mono text-sm text-foreground/40">
+              {'<'} Full Stack Developer {'>'}
+            </p>
+          </motion.div>
+
+          {/* Bio */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="mb-8 space-y-4 text-base leading-relaxed text-muted-foreground"
+          >
+            <p>
+              Desenvolvedor full-stack com transição intencional do setor técnico-elétrico para o desenvolvimento de software.
+              Atuo do banco de dados à interface, com foco em arquitetura limpa e entrega de valor real.
+            </p>
+            <p>
+              Domino o ecossistema JavaScript/TypeScript de ponta a ponta — React e Next.js no front, Node.js e ORMs no back.
+              Tenho dois SaaS em produção e integro IA para entregar soluções mais inteligentes.
+            </p>
+          </motion.div>
 
 
+          {/* Skill tags */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="mb-8 flex flex-wrap gap-2"
+          >
+            {skills.map((skill, i) => (
+              <motion.span
+                key={skill}
+                initial={{ opacity: 0, scale: 0.85 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: 0.35 + i * 0.04 }}
+                whileHover={{ borderColor: 'rgba(0,229,160,0.5)', color: '#00E5A0' }}
+                className="cursor-default rounded-md border border-border bg-card/40 px-3 py-1.5 font-mono text-xs text-muted-foreground transition-colors duration-200"
+              >
+                {skill}
+              </motion.span>
+            ))}
+          </motion.div>
 
-            <div className="space-y-4 text-muted-foreground text-lg leading-relaxed">
-              <p>
-                Sou Carlos Resende, desenvolvedor full-stack com experiência em construir aplicações web modernas — do banco de dados à interface. Trabalho com foco em performance, arquitetura limpa e entrega de valor real.
-              </p>
-              <p>
-                Domino o ecossistema JavaScript/TypeScript de ponta a ponta, combinando React e Next.js no front-end com Node.js e bancos de dados relacionais e não-relacionais no back-end. Integro ferramentas de IA para entregar soluções mais inteligentes e eficientes.
-              </p>
-            </div>
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="flex flex-wrap gap-3"
+          >
+            <a
+              href="#portfolio"
+              className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-primary/90 hover:shadow-[0_0_24px_rgba(0,229,160,0.35)]"
+            >
+              Ver Projetos
+              <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+            </a>
 
-            {/* Tags de skills */}
-            <div className="flex flex-wrap gap-2">
-              {skills.map((skill) => (
-                <span
-                  key={skill}
-                  className="px-3 py-1.5 rounded-lg bg-muted text-foreground text-sm font-mono border border-border hover:border-primary/40 transition-colors"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-
-            {/* Botões */}
-            <div className="flex flex-wrap gap-3 mt-2">
-              <Button variant='default' className='inline-flex items-center gap-2 px-6 py-5 rounded-full bg-primary hover:bg-accent hover:shadow-sm hover:shadow-accent/20 text-white font-semibold text-sm transition-all'>
-                <a
-                  href="#portfolio"
-                  className="flex items-center gap-2 "
-                >
-                  Ver Projetos
-                  <ArrowRight size={16} />
-                </a>
-              </Button>
-              
-              <Button variant='outline' className='inline-flex items-center gap-2 px-6 py-5 rounded-full border border-border text-foreground hover:border-accent hover:text-accent font-semibold text-sm transition-all'>
-                <a
-                  href="/cv-carlos-resende.pdf"
-                  download
-                  className="flex items-center gap-2 "
-                >
-                  <Download size={16} />
-                  Download CV
-                </a>
-              </Button>
-            </div>
+            <a
+              href="/cv-carlos-resende.pdf"
+              download
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-transparent px-6 py-3 text-sm font-semibold text-muted-foreground transition-all duration-300 hover:border-tertiary hover:text-foreground"
+            >
+              <Download size={15} />
+              Download CV
+            </a>
           </motion.div>
         </div>
       </div>
+
+      {/* Linha decorativa bottom */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.2, ease: 'easeOut' }}
+        className="absolute bottom-0 left-0 h-px w-full origin-left bg-gradient-to-r from-primary/40 via-border to-transparent"
+      />
     </section>
   )
 }

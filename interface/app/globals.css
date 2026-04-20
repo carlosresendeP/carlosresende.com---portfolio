@@ -34,6 +34,9 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
 
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -44,77 +47,47 @@
 }
 
 /*
-  Paleta Oceânica (Deep Teal & Warm Cream)
-  color1: #e3dfba  →  oklch(0.888 0.057 98)   — Cream / foreground
-  color2: #c8d6bf  →  oklch(0.844 0.040 148)  — Sage / tertiary
-  color3: #93ccc6  →  oklch(0.786 0.072 192)  — Light teal / secondary
-  color4: #6cbdb5  →  oklch(0.726 0.089 192)  — Teal / primary
-  color5: #1a1f1e  →  oklch(0.127 0.008 175)  — Deep dark / background
+  Paleta Dark Minimal
+  background:     #0A0A0A  — preto profundo
+  surface/card:   #111111  — superfície elevada
+  primary:        #00E5A0  — verde-menta accent
+  foreground:     #FFFFFF  — texto principal
+  muted:          #888888  — texto secundário
+  border:         #1E1E1E  — borda sutil / #333 mais visível
 */
 :root {
-  --background: oklch(17.283% 0.00667 178.89);      /* #1e2826  dark teal slate */
-  --foreground: oklch(0.888 0.057 98);        /* #e3dfba  warm cream */
+  --background: #0A0A0A;
+  --foreground: #f3f3f3;
 
-  --card: oklch(0.210 0.018 175);             /* slightly elevated surface */
-  --card-foreground: oklch(0.888 0.057 98);
+  --card: #111111;
+  --card-foreground: #FFFFFF;
 
-  /* Primary: Teal (#6cbdb5) */
-  --primary: oklch(0.726 0.089 192);
-  --primary-foreground: oklch(0.127 0.008 175);
+  --primary: #00E5A0;
+  --primary-foreground: #0A0A0A;
 
-  /* Secondary: Light Teal (#93ccc6) */
-  --secondary: oklch(0.786 0.072 192);
-  --secondary-foreground: oklch(0.127 0.008 175);
+  --secondary: #1E1E1E;
+  --secondary-foreground: #FFFFFF;
 
-  /* Tertiary: Sage Green (#c8d6bf) */
-  --tertiary: oklch(0.844 0.040 148);
-  --tertiary-foreground: oklch(0.127 0.008 175);
+  --tertiary: #333333;
+  --tertiary-foreground: #FFFFFF;
 
-  --muted: oklch(0.250 0.015 175);            /* dark elevated muted surface */
-  --muted-foreground: oklch(0.550 0.025 175); /* mid-tone for body text */
+  --muted: #111111;
+  --muted-foreground: #888888;
 
-  /* Accent: Warm Cream (#e3dfba) — contraste quente sobre teal */
-  --accent: oklch(0.888 0.057 98);
-  --accent-foreground: oklch(0.127 0.008 175);
+  --accent: #00E5A0;
+  --accent-foreground: #0A0A0A;
+
+  --success: #00e54c;
+  --success-foreground: #0A0A0A;
 
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(1 0 0);
+  --destructive-foreground: #FFFFFF;
 
-  --border: oklch(1 0 0 / 8%);
-  --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.726 0.089 192);             /* Segue o Primary Teal */
+  --border: #1E1E1E;
+  --input: #1E1E1E;
+  --ring: #00E5A0;
 
   --radius: 0.625rem;
-}
-
-.dark {
-  --background: oklch(0.165 0.018 175);      /* #1e2826  dark teal slate */
-  --foreground: oklch(0.888 0.057 98);
-
-  --card: oklch(0.175 0.009 175);
-  --card-foreground: oklch(0.888 0.057 98);
-
-  --primary: oklch(0.726 0.089 192);
-  --primary-foreground: oklch(0.127 0.008 175);
-
-  --secondary: oklch(0.786 0.072 192);
-  --secondary-foreground: oklch(0.127 0.008 175);
-
-  --tertiary: oklch(0.844 0.040 148);
-  --tertiary-foreground: oklch(0.127 0.008 175);
-
-  --muted: oklch(0.220 0.008 175);
-  --muted-foreground: oklch(0.550 0.025 175);
-
-  --accent: oklch(0.888 0.057 98);
-  --accent-foreground: oklch(0.127 0.008 175);
-
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(1 0 0);
-
-  --border: oklch(1 0 0 / 8%);
-  --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.726 0.089 192);
 }
 
 @layer base {
@@ -148,8 +121,8 @@ body {
 
 .hero-grid-bg {
   background-image:
-    linear-gradient(rgba(108, 189, 181, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(108, 189, 181, 0.06) 1px, transparent 1px);
+    linear-gradient(rgba(0, 229, 160, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 160, 0.06) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
