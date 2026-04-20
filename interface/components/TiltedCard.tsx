@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'motion/react';
 
 interface TiltedCardProps {
-  imageSrc: React.ComponentProps<'img'>['src'] | null | React.ComponentType | React.Component | React.ReactNode;
+  imageSrc?: React.ComponentProps<'img'>['src'];
   altText?: string;
   captionText?: string;
   containerHeight?: React.CSSProperties['height'];
