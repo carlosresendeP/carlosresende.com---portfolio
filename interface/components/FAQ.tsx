@@ -9,6 +9,8 @@ interface FaqItem {
   answer: string
 }
 
+const phoneNumber = process.env.PHONE_NUMBER;
+
 const faqData: FaqItem[] = [
   {
     question: 'Quais serviços você oferece?',
@@ -172,7 +174,7 @@ export default function FAQ() {
               </div>
             </div>
             <a
-              href={`https://wa.me/5532${process.env.NEXT_PUBLIC_PHONE}?text=Ol%C3%A1! Gostaria de tirar algumas d%C3%BAvidas sobre seus servi%C3%A7os.`}
+              href={`https://wa.me/5532998630759?text=Ol%C3%A1! Gostaria de tirar algumas d%C3%BAvidas sobre seus servi%C3%A7os.`}
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center gap-2 px-6 py-3 bg-primary

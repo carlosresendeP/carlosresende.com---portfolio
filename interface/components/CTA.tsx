@@ -15,6 +15,8 @@ const MARQUEE_ITEMS = [
   "NODE.JS",
 ];
 
+const phoneNumber = process.env.PHONE_NUMBER;
+
 export default function CTA() {
   return (
     <section id="cta" className="relative overflow-hidden bg-card/20">
@@ -153,7 +155,7 @@ export default function CTA() {
               />
             </a>
             <a
-              href={`https://wa.me/5532${process.env.PHONE_NUMBER}?text=Ol%C3%A1! Quero saber mais sobre seus servi%C3%A7os.`}
+              href={`https://wa.me/5532${phoneNumber}?text=Ol%C3%A1! Quero saber mais sobre seus servi%C3%A7os.`}
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center justify-center gap-2 px-8 py-4

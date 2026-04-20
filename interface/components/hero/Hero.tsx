@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, Mail, ChevronDown } from 'lucide-react'
 import BlurText from '@/components/BlurText'
+import Link from 'next/link'
 
 const ROLES = [
   'Desenvolvedor Front-End',
@@ -168,6 +169,7 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 1.0 }}
             className="flex flex-col gap-3 lg:min-w-[40%]"
           >
+            <Link href="#contact">
             <Button
               size="lg"
               className="group gap-2 bg-primary text-primary-foreground
@@ -179,7 +181,9 @@ export default function Hero() {
               Começar um projeto
               <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
             </Button>
+            </Link>
 
+            <Link href="#contact">
             <Button
               size="lg"
               variant="outline"
@@ -190,6 +194,7 @@ export default function Hero() {
               <Mail className="size-4" />
               Entre em contato
             </Button>
+            </Link>
           </motion.div>
 
         </div>

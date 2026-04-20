@@ -75,10 +75,12 @@ export default function Contact() {
     },
     {
       icon: FaWhatsapp,
-      href: "https://wa.me/5532998283189",
+      href: `https://wa.me/5532998630759`,
       label: "WhatsApp",
     },
   ];
+
+  const phoneNumber = process.env.PHONE_NUMBER;
 
   const [form, setForm] = useState<FormState>({
     name: "",
@@ -217,8 +219,8 @@ export default function Contact() {
                 {
                   icon: Phone,
                   label: "WhatsApp",
-                  value: `+55 (32) ${process.env.PHONE_NUMBER}`,
-                  href: `https://wa.me/5532${process.env.PHONE_NUMBER}`,
+                  value: `+55 (32) 99863-0759`,
+                  href: `https://wa.me/5532${phoneNumber}`,
                 },
                 {
                   icon: MapPin,
@@ -460,7 +462,7 @@ export default function Contact() {
               className="w-full bg-green-600 hover:bg-green-500 text-white rounded-none gap-2 font-bold"
             >
               <a
-                href="https://wa.me/5532998283189"
+                href={`https://wa.me/5532${phoneNumber}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
