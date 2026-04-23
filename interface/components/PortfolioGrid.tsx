@@ -128,13 +128,13 @@ export default function PortfolioGrid({ projects }: { projects: Project[] }) {
                     )}
 
                     {/* Hover overlay: action links */}
-                    <div className="absolute inset-0 flex items-center justify-center gap-3 bg-background/80 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+                    <div className="absolute z-20 inset-0 flex items-center justify-center gap-3 bg-background/80 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
                       {project.deploy && (
                         <a
                           href={project.deploy}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-1.5 bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-all hover:bg-primary/90"
+                          className="flex z-10 items-center gap-1.5 bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition-all hover:bg-primary/90"
                         >
                           <ArrowUpRight size={13} />
                           Ver Live
@@ -144,7 +144,7 @@ export default function PortfolioGrid({ projects }: { projects: Project[] }) {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 border border-border bg-background px-4 py-2 text-xs font-semibold text-foreground/80 transition-all hover:border-primary/30 hover:text-foreground"
+                        className="flex z-10 items-center gap-1.5 border border-border bg-background px-4 py-2 text-xs font-semibold text-foreground/80 transition-all hover:border-primary/30 hover:text-foreground"
                       >
                         <FaGithub size={12} />
                         GitHub
