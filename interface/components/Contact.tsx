@@ -80,7 +80,7 @@ export default function Contact() {
     },
   ];
 
-  const phoneNumber = process.env.PHONE_NUMBER;
+  const phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER;
 
   const [form, setForm] = useState<FormState>({
     name: "",

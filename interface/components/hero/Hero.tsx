@@ -129,7 +129,7 @@ export default function Hero() {
           {/* Left: role rotator + description */}
           <div className="flex flex-col gap-5 lg:max-w-lg xl:max-w-xl">
 
-            <div className="flex items-center gap-3 h-7 overflow-hidden" aria-live="polite">
+            <div className="flex items-center gap-3 h-8 md:h-10 overflow-hidden" aria-live="polite">
               <span className="font-mono text-xs text-primary shrink-0 select-none">—</span>
               <AnimatePresence mode="wait">
                 <motion.span
@@ -138,7 +138,7 @@ export default function Hero() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -14 }}
                   transition={{ duration: 0.3, ease: 'easeInOut' }}
-                  className="font-mono text-3xl font-semibold text-primary"
+                  className="font-mono text-xl md:text-3xl font-semibold text-primary"
                 >
                   {firstName}
                   <span className="text-foreground"> {remainingText}</span>

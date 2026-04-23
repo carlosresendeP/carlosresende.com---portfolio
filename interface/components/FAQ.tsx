@@ -9,7 +9,7 @@ interface FaqItem {
   answer: string
 }
 
-const phoneNumber = process.env.PHONE_NUMBER;
+const phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER;
 
 const faqData: FaqItem[] = [
   {

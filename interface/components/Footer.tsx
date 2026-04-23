@@ -28,7 +28,7 @@ const socialLinks: SocialLink[] = [
   },
   {
     icon: FaWhatsapp,
-    href: `https://wa.me/5532${process.env.PHONE_NUMBER}`,
+    href: `https://wa.me/5532${process.env.NEXT_PUBLIC_PHONE_NUMBER}`,
     label: "WhatsApp",
   },
 ];
@@ -101,7 +101,7 @@ export const Footer = () => {
               personalizada.
             </p>
             <a
-              href={`https://wa.me/5532${process.env.PHONE_NUMBER}?text=Ol%C3%A1! Gostaria de um or%C3%A7amento gratuito.`}
+              href={`https://wa.me/5532${process.env.NEXT_PUBLIC_PHONE_NUMBER}?text=Ol%C3%A1! Gostaria de um or%C3%A7amento gratuito.`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary/10 border border-primary/20 text-primary hover:bg-accent/20 hover:border-accent hover:text-foreground transition-colors text-sm font-medium"

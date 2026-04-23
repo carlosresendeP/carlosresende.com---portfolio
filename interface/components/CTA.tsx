@@ -15,7 +15,7 @@ const MARQUEE_ITEMS = [
   "NODE.JS",
 ];
 
-const phoneNumber = process.env.PHONE_NUMBER;
+const phoneNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER;
 
 export default function CTA() {
   return (
